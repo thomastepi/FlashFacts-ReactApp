@@ -1,23 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./assets/logo.png";
+import "./assets/App.css";
+import Header from "./components/Header";
+import CatFilter from "./components/CatFilter";
+import NewFactForm from "./components/NewFactForm";
+import FactList from "./components/FactList"
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header logo={logo} />
+      <NewFactForm className="fact-form"/>
+      <main className="main">
+      <CatFilter />
+      <FactList />
+      </main>
     </div>
   );
 }
