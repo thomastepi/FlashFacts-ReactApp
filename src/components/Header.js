@@ -1,12 +1,13 @@
 function Header(props) {
+  console.log(props)
   return (
     <header className="header">
       <div className="logo">
         <img src={props.logo} height="68" width="68" alt="quick fact Logo" />
-        <h1>Today I Learned</h1>
+        <h1>FlashFeeds</h1>
       </div>
 
-      <button className="btn btn-large btn-open">Share a fact</button>
+      <button onClick={props.toggleForm} className="btn btn-large btn-open">{props.toggle ? "close" : "Share a FlashFact"}</button>
     </header>
   );
 }
