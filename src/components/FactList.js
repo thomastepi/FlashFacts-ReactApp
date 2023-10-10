@@ -21,14 +21,14 @@ export default function FactList({ facts, categories }) {
               {item.category}
             </span>
             <div className="vote-buttons">
-                <button>👍 {item.votesInteresting} </button>
-                <button>🤯 {item.votesMindblowing} </button>
-                <button>⛔️ {item.votesFalse} </button>
+                <button>👍 {item.voteInteresting} </button>
+                <button>🤯 {item.voteMindBlowing} </button>
+                <button>⛔️ {item.voteFalse} </button>
             </div>
           </li>
         );
       })}
-      <p>There are {facts.length} items in the facts. Add yours!</p>
+      <p>There are {facts.length} facts in the feed. Add yours!</p>
     </section>
   );
 }

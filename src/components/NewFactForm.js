@@ -5,7 +5,7 @@ export default function NewFactForm( {setFacts, toggleForm} ) {
   const [text, setText] = useState("");
   const [source, setSource] = useState("http://www.example.com");
   const [category, setCategory] = useState("");
-  const [Categories, setCategories] = useState(CATEGORIES)
+  const [Categories] = useState(CATEGORIES)
 
   var textCount = text.length;
 

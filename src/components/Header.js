@@ -1,5 +1,4 @@
 function Header(props) {
-  console.log(props)
   return (
     <header className="header">
       <div className="logo">
