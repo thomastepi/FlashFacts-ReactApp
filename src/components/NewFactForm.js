@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { CATEGORIES } from "../assets/data";
+import supabase from "../assets/supabase";
 
-export default function NewFactForm( {setFacts, toggleForm} ) {
+export default function NewFactForm({ setFacts, toggleForm }) {
   const [text, setText] = useState("");
   const [source, setSource] = useState("http://www.example.com");
   const [category, setCategory] = useState("");
-  const [Categories] = useState(CATEGORIES)
+  const [Categories] = useState(CATEGORIES);
+  const [isUploading, setIsUploading] = useState(false);
 
   var textCount = text.length;
 
@@ -21,33 +23,34 @@ export default function NewFactForm( {setFacts, toggleForm} ) {
     return url.protocol === "http:" || url.protocol === "https:";
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     // prevent event default behavior
     e.preventDefault();
 
     // validate entries and create new flashfact
     if (text && isValidHttpUrl(source) && category && textCount <= 200) {
-      const newFact = {
-        id: (Math.floor(Math.random)) * 1000,
-        text,
-        source,
-        category,
-        votesInteresting: 0,
-        votesMindblowing: 0,
-        votesFalse: 0,
-        createdIn: new Date().getFullYear,
-      };
-    
-      // update fact list
-      setFacts((prevFact) => [newFact, ...prevFact])
+      // upload fact to database and receive new fact object
+      setIsUploading(true);
+      const { data: newFact, error } = await supabase
+        .from("flashFacts")
+        .insert([{ text, source, category }])
+        .select();
+      setIsUploading(false);
+
+      // handle error and update fact list
+      if (error) {
+        alert("There was a problem adding flashFact");
+      } else {
+        setFacts((prevFact) => [newFact[0], ...prevFact]);
+      }
 
       // reset entry fields to default
-      setText('');
+      setText("");
       setSource("http://www.example.com");
-      setCategory('')
+      setCategory("");
 
       // hide form after posting new flashfact
-      toggleForm()
+      toggleForm();
     }
   }
   return (
@@ -55,6 +58,7 @@ export default function NewFactForm( {setFacts, toggleForm} ) {
       <input
         type="text"
         value={text}
+        disabled={isUploading}
         onChange={(e) => {
           setText(e.target.value);
         }}
@@ -64,6 +68,7 @@ export default function NewFactForm( {setFacts, toggleForm} ) {
       <input
         type="text"
         value={source}
+        disabled={isUploading}
         onChange={(e) => {
           setSource(e.target.value);
         }}
@@ -71,6 +76,7 @@ export default function NewFactForm( {setFacts, toggleForm} ) {
       />
       <select
         value={category}
+        disabled={isUploading}
         onChange={(e) => {
           setCategory(e.target.value);
         }}
@@ -84,7 +90,9 @@ export default function NewFactForm( {setFacts, toggleForm} ) {
           );
         })}
       </select>
-      <button className="btn btn-large">Post</button>
+      <button disabled={isUploading} className="btn btn-large">
+        Post
+      </button>
     </form>
   );
 }

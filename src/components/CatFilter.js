@@ -1,11 +1,18 @@
 import { CATEGORIES } from "../assets/data";
 
-export default function CatFilter() {
+export default function CatFilter({ setCurrentCategory }) {
   return (
     <aside>
       <ul>
         <li className="category">
-          <button className="btn btn-all-categories">All</button>
+          <button
+            onClick={() => {
+              setCurrentCategory("all");
+            }}
+            className="btn btn-all-categories"
+          >
+            All
+          </button>
         </li>
         {CATEGORIES.map((item) => {
           return (
@@ -13,6 +20,9 @@ export default function CatFilter() {
               <button
                 className="btn btn-category"
                 style={{ backgroundColor: item.color }}
+                onClick={() => {
+                  setCurrentCategory(item.name);
+                }}
               >
                 {item.name}
               </button>
